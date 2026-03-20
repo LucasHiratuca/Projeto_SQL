@@ -11,7 +11,7 @@ if csv_files:
     # Criar banco SQLite
     conn = sqlite3.connect('./dados/processed/retail_sales_ver2.db')
     df.to_sql('vendas2', conn, if_exists='replace', index=False)
-    conn.close()
+
     
     print("✅ Banco SQLite criado em: ./dados/processed/retail_sales.db")
 else:
