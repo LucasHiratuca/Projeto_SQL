@@ -4,21 +4,21 @@ import sqlite3
 conn = sqlite3.connect('dados/processed/retail_sales_clean.db')
 
 query = """
-    WITH compras_usuario AS (
+    WITH ano_mes AS (
         SELECT
-            Customer_ID,
             SUM(Total_Amount) AS valor_total,
-            DENSE_RANK() OVER (ORDER BY SUM(Total_Amount) DESC) AS rank
+            substr(Date, 1, 4) AS ano,
+            strftime('%m', Date) AS mes
         FROM vendas2
-        GROUP BY Customer_ID     
-    ) 
+        GROUP BY ano, mes
+    )
+    
     SELECT 
-        Customer_ID,
+        ano,
+        mes,
         valor_total,
-        rank  
-    FROM compras_usuario 
-    WHERE rank <= 10
-    ORDER BY valor_total DESC;
+        SUM(valor_total) OVER (PARTITION BY ano ORDER BY mes) AS acumulado
+    FROM ano_mes;
 """
 
 resultado = pd.read_sql_query(query, conn)
