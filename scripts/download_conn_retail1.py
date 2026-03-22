@@ -24,7 +24,7 @@ if csv_files:
     df = pd.read_csv(os.path.join("./dados/dataset", csv_files[0]))
     
     # Criar banco SQLite
-    conn = sqlite3.connect("./dados/processed/retail_sales.db")
+    conn = sqlite3.connect("./dados/processed/retail_sales1.db")
     df.to_sql('vendas', conn, if_exists='replace', index=False)
     conn.close()
     

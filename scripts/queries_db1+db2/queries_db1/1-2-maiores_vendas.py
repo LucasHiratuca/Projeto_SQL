@@ -4,7 +4,7 @@ import pandas as pd
 import sqlite3
 
 # 1. Conectar com o db
-conn = sqlite3.connect('dados/processed/retail_sales.db')
+conn = sqlite3.connect('dados/processed/retail_sales1.db')
 
 # 2. Executar uma query direto no Python
 query = """

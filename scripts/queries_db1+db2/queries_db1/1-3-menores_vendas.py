@@ -3,7 +3,7 @@
 import pandas as pd
 import sqlite3
 
-conn = sqlite3.connect('dados/processed/retail_sales.db')
+conn = sqlite3.connect('dados/processed/retail_sales1.db')
 
 query = """
         SELECT venda, COUNT(venda) as frequencia

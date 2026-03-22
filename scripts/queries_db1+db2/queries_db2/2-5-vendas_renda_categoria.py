@@ -1,14 +1,14 @@
 import pandas as pd
 import sqlite3
 
-conn = sqlite3.connect('dados/processed/retail_sales_clean.db')
+conn = sqlite3.connect('dados/processed/retail_sales_clean2.db')
 
 query = """
     WITH por_receita AS (
         SELECT
             Product_Category,
             SUM(Total_Amount) AS valor,
-            DENSE_RANK() OVER (ORDER BY SUM(Total_Amount) DESC) AS rank_receita
+            RANK() OVER (ORDER BY SUM(Total_Amount) DESC) AS rank_receita
         FROM vendas2
         GROUP BY Product_Category
     ),
@@ -17,7 +17,7 @@ query = """
         SELECT
             Product_Category,
             COUNT(*) AS valor,
-            DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rank_quantidade
+            RANK() OVER (ORDER BY COUNT(*) DESC) AS rank_quantidade
         FROM vendas2
         GROUP BY Product_Category
     )

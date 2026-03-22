@@ -14,7 +14,7 @@ df['Price_per_Unit'] = pd.to_numeric(df['Price_per_Unit'], errors='coerce')
 df['Date']           = pd.to_datetime(df['Date'],          errors='coerce')
 
 # ── 4. Salvar no banco ────────────────────────────────────────────────────────
-conn = sqlite3.connect('dados/processed/retail_sales_clean.db')  # ← linha correta?
+conn = sqlite3.connect('dados/processed/retail_sales_clean2.db')  # ← linha correta?
 df.to_sql('vendas2', conn, if_exists='replace', index=False)
 
 print("✅ Importado direto, sem passar pelo Orange")

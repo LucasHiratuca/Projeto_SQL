@@ -3,7 +3,7 @@
 import pandas as pd
 import sqlite3
 
-conn = sqlite3.connect('dados/processed/retail_sales.db')
+conn = sqlite3.connect('dados/processed/retail_sales1.db')
 
 query = """
         SELECT 
@@ -21,7 +21,9 @@ query = """
         SUM(venda) as total_vendas
         FROM vendas
         GROUP BY dia_semana
-        ORDER BY total_vendas desc;"""
+        ORDER BY total_vendas DESC;
+        """
+
 resultado = pd.read_sql_query(query, conn)
 print(resultado)
 

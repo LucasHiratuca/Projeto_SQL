@@ -1,7 +1,7 @@
 import pandas as pd
 import sqlite3
 
-conn = sqlite3.connect('dados/processed/retail_sales.db')
+conn = sqlite3.connect('dados/processed/retail_sales1.db')
 
 query = """
         WITH vendas_classificadas AS (
@@ -39,14 +39,12 @@ query = """
             v1.vendas_totais,
             CASE 
             WHEN v1.mes = 'Janeiro' THEN
-            -- Para Janeiro: compara com Dezembro (v2)
                 CASE 
                     WHEN v1.vendas_totais > v2.vendas_totais THEN 'Superior🔥'
                     WHEN v1.vendas_totais < v2.vendas_totais THEN 'Inferior💔'
                     ELSE 'Igual☁️'
                 END
                 ELSE
-            -- Para outros meses: compara com o anterior usando LAG
                 CASE 
                     WHEN v1.vendas_totais > LAG(v1.vendas_totais) OVER (ORDER BY v1.mes_numerado) THEN 'Superior🔥'
                     WHEN v1.vendas_totais < LAG(v1.vendas_totais) OVER (ORDER BY v1.mes_numerado) THEN 'Inferior💔'
