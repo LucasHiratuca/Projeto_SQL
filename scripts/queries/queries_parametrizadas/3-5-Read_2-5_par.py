@@ -39,8 +39,8 @@ def select_vendas(conn) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    conn = sqlite3.connect("dados/processed/retail_sales_clean2.db")
     try:
+        conn = sqlite3.connect("dados/processed/retail_sales_clean2.db")
         df = select_vendas(conn)
         print(df)
 

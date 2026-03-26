@@ -12,8 +12,9 @@ def delete_vendas(conn, transaction_id: int) -> None:
 
 
 if __name__ == "__main__":
-    conn = sqlite3.connect("dados/processed/retail_sales_clean2.db")
     try:
+        conn = sqlite3.connect("dados/processed/retail_sales_clean2.db")
+        
         transaction_id = int(input("Digite o id da transação que deseja excluir: "))
 
         delete_vendas(conn, transaction_id)

@@ -15,9 +15,8 @@ def atualizar_transacao(conn, transacao_id: int, data: str, customer_id: str,
 
 
 if __name__ == "__main__":
-    conn = sqlite3.connect("dados/processed/retail_sales_clean2.db")
-
     try:
+        conn = sqlite3.connect("dados/processed/retail_sales_clean2.db")
         transacao_id  = int(input("Digite o id da transação que deseja atualizar: "))
         data          = input("Informe a data (formato YYYY-MM-DD): ")
         customer_id   = input("Digite o ID do cliente (ex: CUST001): ")
