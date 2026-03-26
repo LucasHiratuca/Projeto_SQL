@@ -16,10 +16,22 @@ diretamente aplicada em ferramentas como dbt, Airflow ou Spark SQL.
 
 ---
 
+### Queries Parametrizadas
+| Arquivo | Operação |
+|---|---|
+| `3-1-Create.py` | INSERT parametrizado |
+| `3-2-Read_Basico.py` | SELECT com limite padrão |
+| `3-3-Update.py` | UPDATE por Transaction_ID |
+| `3-4-Delete.py` | DELETE por Transaction_ID |
+| `3-2-5-Read_2_5_par.py` | SELECT parametrizado avançado |
+
+---
+
 ## 📐 Conceitos SQL Aplicados
 
 | Conceito | Onde foi usado |
 |---|---|
+| **CRUD parametrizado** | Create, Read, Update e Delete com parâmetros tipados |
 | **CTE** (`WITH`) | Todas as queries do banco 2 + Queries 1 e 5 do primeiro banco |
 | **Window Functions** (`OVER`) | Receita acumulada, ranking de categorias |
 | **Self JOIN** | Comparação com mês de referência em vendas mensais (Query 1-5) |
@@ -33,32 +45,35 @@ diretamente aplicada em ferramentas como dbt, Airflow ou Spark SQL.
 ---
 
 ## 🗂️ Estrutura do Projeto
-```
 TREINO_SQL/
 ├── dados/
 │   ├── processed/                  # Bancos de dados SQLite prontos para análise
-│   │   ├── retail_sales_clean2.db  # Banco limpo, importado via pandas
-│   │   └── retail_sales1.db        # Banco original
+│   │   ├── retail_sales_clean2.db  # Segundo banco limpo, importado via pandas
+│   │   └── retail_sales1.db        # Primiero banco 
 │   ├── raw_datasets/               # Dados brutos
-│   │   ├── retail_sales_ver2.csv   # Dataset original
-│   │   └── mock_kaggle.csv         # Dataset auxiliar
+│   │   └── mock_kaggle.csv         # Dataset original auxiliar (Primeiro banco)
 │   └── report/                     # Exploração e relatórios
 │       ├── orange_data_cleaning/   # Análise exploratória feita no Orange
 │       │   ├── missing_values.png  # Valores ausentes
 │       │   ├── redundant_column.png
+│       │   ├── retail_sales_ver2.csv  # Dataset pós limpeza no Orange
 │       │   ├── structure.png       # Estrutura do dataset
 │       │   └── unique.png          # Valores únicos
 │       └── retail_sales_dataset2.csv
-├── scripts/                        # Scripts Python
-│   ├── queries_db1+db2/
+├── scripts/
+│   ├── queries/
 │   │   ├── queries_db1/            # Queries do banco 1
-│   │   └── queries_db2/            # Queries do banco 2
-│   ├── clean_retail2.py            # Limpeza e importação do dataset
-│   ├── download_conn_retail1.py    # Conexão e download do banco 1
-│   └── README.md
+│   │   ├── queries_db2/            # Queries do banco 2
+│   │   └── queries_parametrizadas/ # CRUD e queries parametrizadas
+│   │       ├── 3-1-Create.py       # INSERT parametrizado
+│   │       ├── 3-2-Read_Basico.py  # SELECT com limite padrão
+│   │       ├── 3-3-Update.py       # UPDATE por Transaction_ID
+│   │       ├── 3-4-Delete.py       # DELETE por Transaction_ID
+│   │       └── 3-5-Read_2_5_par.py # SELECT parametrizado avançado
+│   ├── clean_retail2.py            # Limpeza e importação do dataset 2
+│   └── download_conn_retail1.py    # Conexão e download do banco 1
 ├── .gitignore
 └── README.md
-```
 
 ---
 
