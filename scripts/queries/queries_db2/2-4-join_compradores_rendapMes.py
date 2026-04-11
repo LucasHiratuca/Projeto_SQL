@@ -7,17 +7,17 @@ query = """
     WITH soma_user AS (
         SELECT
             Customer_ID,
-            substr(Date, 1, 4) AS ano_user,
+            strftime('%Y', Date) AS ano_user,
             strftime('%m', Date) AS mes_user,
             SUM(Total_Amount) AS valor_total_user
         FROM vendas2
-        GROUP BY Customer_ID
+        GROUP BY Customer_ID, ano_user, mes_user
     ),
     
     ano_mes AS (
         SELECT
             SUM(Total_Amount) AS valor_total_mes,
-            substr(Date, 1, 4) AS ano_month,
+            strftime('%Y', Date) AS ano_month,
             strftime('%m', Date) AS mes_month
         FROM vendas2
         GROUP BY ano_month, mes_month

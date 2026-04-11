@@ -16,7 +16,7 @@ query = """
             WHEN '5' THEN 'Sexta'
             WHEN '6' THEN 'Sábado'
         END as dia_semana,    
-        AVG(venda) as media_vendas,
+        ROUND(AVG(venda), 2) as media_vendas,
         MAX(venda) as maximo_vendas,
         SUM(venda) as total_vendas
         FROM vendas

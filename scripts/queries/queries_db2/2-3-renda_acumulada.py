@@ -17,7 +17,8 @@ query = """
         ano,
         mes,
         valor_total,
-        SUM(valor_total) OVER (PARTITION BY ano ORDER BY mes) AS acumulado
+        SUM(valor_total) OVER (ORDER BY ano, mes) AS acumulado_global,
+        SUM(valor_total) OVER (PARTITION BY ano ORDER BY mes) AS acumulado_anual
     FROM ano_mes;
 """
 

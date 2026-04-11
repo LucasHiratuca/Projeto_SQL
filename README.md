@@ -11,8 +11,7 @@
 
 ## 📌 Sobre o Projeto
 
-Projeto focado em engenharia de dados, com ênfase em queries SQL avançadas aplicadas a um pipeline simples de ingestão e análise. O objetivo é demonstrar o uso de CTEs, Window Functions e JOINs em um contexto de dados reais — estrutura que pode ser
-diretamente aplicada em ferramentas como dbt, Airflow ou Spark SQL.
+Projeto focado em engenharia de dados, com ênfase em queries SQL avançadas aplicadas a um pipeline simples de ingestão e análise. O objetivo é demonstrar o uso de CTEs, Window Functions e JOINs em um contexto de dados reais — estrutura que pode ser diretamente aplicada em ferramentas como dbt, Airflow ou Spark SQL.
 
 ---
 
@@ -23,7 +22,8 @@ diretamente aplicada em ferramentas como dbt, Airflow ou Spark SQL.
 | `3-2-Read_Basico.py` | SELECT com limite padrão |
 | `3-3-Update.py` | UPDATE por Transaction_ID |
 | `3-4-Delete.py` | DELETE por Transaction_ID |
-| `3-2-5-Read_2_5_par.py` | SELECT parametrizado avançado |
+| `3-5-Read_2_5_par.py` | SELECT parametrizado avançado |
+| `3-6-Read_one.py` | SELECT por Transaction_ID e ano |
 
 ---
 
@@ -36,11 +36,12 @@ diretamente aplicada em ferramentas como dbt, Airflow ou Spark SQL.
 | **Window Functions** (`OVER`) | Receita acumulada, ranking de categorias |
 | **Self JOIN** | Comparação com mês de referência em vendas mensais (Query 1-5) |
 | **JOIN** | Percentual por cliente no mês, gênero por categoria |
-**LAG** | Comparação de vendas mês a mês (banco 1) |
+| **LAG** | Comparação de vendas mês a mês (banco 1) |
 | **DENSE_RANK()** | Ranking de categorias por quantidade e receita |
 | **CASE WHEN** | Tradução de dia numérico para nome da semana |
 | **strftime/substr** | Extração de ano, mês e dia da semana de datas |
 | **Divisão inteira** | Correção com `* 1.0` para porcentagens corretas |
+| **Filtro por ano** | `strftime('%Y', Date)` em query parametrizada (Query 3-6) |
 
 ---
 
@@ -61,6 +62,31 @@ TREINO_SQL/
 │       │   ├── structure.png
 │       │   └── unique.png
 │       └── retail_sales_dataset2.csv
+├── outputs/
+│   ├── queries_db1_output/
+│   │   ├── maior_venda_por_ano.png
+│   │   ├── maiores_vendas.png
+│   │   ├── menores_vendas.png
+│   │   ├── vendas_comparando_mes.png
+│   │   └── vendas_por_semana.png
+│   ├── queries_db2_output/
+│   │   ├── compras_acima_media.png
+│   │   ├── genero_por_categoria.png
+│   │   ├── join_compradores.png
+│   │   ├── maiores_compradores.png
+│   │   ├── renda_acumulada.png
+│   │   └── vendas_renda_categoria_ra.png
+│   └── queries_parametrizadas/
+│       ├── delete+after_delete/
+│       │   ├── after_delete.png
+│       │   └── delete.png
+│       ├── update+after_update/
+│       │   ├── after_update.png
+│       │   └── update.png
+│       ├── create.png
+│       ├── read_basico.png
+│       ├── read_one.png
+│       └── read_parametrizado_2-5.png
 ├── scripts/
 │   ├── queries/
 │   │   ├── queries_db1/
@@ -70,12 +96,56 @@ TREINO_SQL/
 │   │       ├── 3-2-Read_Basico.py
 │   │       ├── 3-3-Update.py
 │   │       ├── 3-4-Delete.py
-│   │       └── 3-5-Read_2_5_par.py
+│   │       ├── 3-5-Read_2_5_par.py
+│   │       └── 3-6-Read_one.py
 │   ├── clean_retail2.py
 │   └── download_conn_retail1.py
 ├── .gitignore
 └── README.md
 ```
+
+---
+
+## 🖼️ Outputs — Lógica por trás de cada imagem
+
+Cada query gera um print do terminal salvo como `.png`, documentando o resultado real da execução. A organização segue a mesma estrutura das queries.
+
+### Banco 1 — `queries_db1_output/`
+
+| Imagem | O que mostra |
+|---|---|
+| `maior_venda_por_ano.png` | A transação de maior valor agrupada por ano — valida se há variação significativa de ticket máximo entre períodos |
+| `maiores_vendas.png` | Top N transações em valor absoluto — identifica os outliers de receita no dataset |
+| `menores_vendas.png` | Transações de menor valor — útil para entender o ticket mínimo e possíveis registros inconsistentes |
+| `vendas_comparando_mes.png` | Comparação de receita entre meses usando `LAG` — evidencia crescimento ou queda mês a mês |
+| `vendas_por_semana.png` | Distribuição de vendas por dia da semana via `CASE WHEN` — mostra padrões de comportamento semanal |
+
+### Banco 2 — `queries_db2_output/`
+
+| Imagem | O que mostra |
+|---|---|
+| `maiores_compradores.png` | Clientes rankeados por receita total gerada — base para análise de clientes de alto valor |
+| `compras_acima_media.png` | Clientes cujo gasto total supera a média geral — segmentação simples de comportamento de compra |
+| `renda_acumulada.png` | Receita acumulada mês a mês com Window Function — visualiza a curva de crescimento do negócio |
+| `join_compradores.png` | Percentual de contribuição de cada cliente na receita do seu mês — resultado do JOIN entre soma por cliente e soma por mês |
+| `vendas_renda_categoria_ra.png` | Ranking de categorias por quantidade vendida e receita gerada com `DENSE_RANK()` — compara categorias em duas dimensões |
+| `genero_por_categoria.png` | Percentual de vendas por gênero dentro de cada categoria — cruza duas dimensões de segmentação |
+
+### Queries Parametrizadas — `queries_parametrizadas/`
+
+| Imagem | O que mostra |
+|---|---|
+| `create.png` | Terminal após INSERT — confirma que o novo registro foi inserido com os parâmetros fornecidos |
+| `read_basico.png` | Resultado do SELECT com limite padrão — valida a leitura básica do banco |
+| `read_one.png` | Resultado do SELECT filtrado por Transaction_ID e ano — demonstra o uso de dois parâmetros combinados com `strftime` |
+| `read_parametrizado_2-5.png` | SELECT com múltiplos filtros — mostra o resultado de uma leitura mais específica com parâmetros avançados |
+| `update.png` | Estado do registro **antes** do UPDATE — serve como referência do valor original |
+| `after_update.png` | Estado do registro **após** o UPDATE — confirma que a alteração foi aplicada corretamente |
+| `delete.png` | Estado do registro **antes** do DELETE — documenta o que existia antes da remoção |
+| `after_delete.png` | Tentativa de SELECT após o DELETE — retorna vazio, confirmando que o registro foi removido |
+
+> **Nota:** Os pares `update/after_update` e `delete/after_delete` foram intencionalmente organizados em subpastas separadas para deixar clara a sequência antes/depois de cada operação destrutiva.
+
 ---
 
 ## 📦 Datasets
@@ -86,7 +156,7 @@ Dataset de vendas com foco em séries temporais — análise por dia, semana e m
 **Banco 2 — `retail_sales_clean2.db`**
 Dataset de varejo com foco em comportamento de clientes e categorias de produtos.
 
-Os dois bancos são independentes e treinam contextos diferentes de análise, elas não possuem relação entre si. A decisão de abordar 2 datasets diferentes, veio da ideia de extrair dados de duas formas diferentes, uma por meio da API do Kaggle, e a outra por download na máquina e conversão em tabela SQLite por meio da biblioteca Pandas
+Os dois bancos são independentes e treinam contextos diferentes de análise, elas não possuem relação entre si. A decisão de abordar 2 datasets diferentes, veio da ideia de extrair dados de duas formas diferentes, uma por meio da API do Kaggle, e a outra por download na máquina e conversão em tabela SQLite por meio da biblioteca Pandas.
 
 ---
 
@@ -104,7 +174,7 @@ df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
 df.to_sql('vendas2', conn, if_exists='replace', index=False)
 ```
 
--Vale destacar, que a limpeza foi efetuada apenas no segundo dataset, que tinha espaços como separadores. O primeiro dataset (mock_kaggle.csv) não teve limpeza, por não ter dados ausentes ou colunas com nomenclatura que geraria problema para o SQLite
+Vale destacar que a limpeza foi efetuada apenas no segundo dataset, que tinha espaços como separadores. O primeiro dataset (`mock_kaggle.csv`) não teve limpeza, por não ter dados ausentes ou colunas com nomenclatura que geraria problema para o SQLite.
 
 ---
 
@@ -129,6 +199,16 @@ df.to_sql('vendas2', conn, if_exists='replace', index=False)
 | `2-5-vendas_renda_categoria.py` | Ranking de categorias por quantidade e receita? |
 | `2-6-genero_pcategoria.py` | Qual o percentual de cada gênero por categoria? |
 
+### Queries Parametrizadas
+| Arquivo | O que faz |
+|---|---|
+| `3-1-Create.py` | Insere uma nova transação via parâmetros tipados |
+| `3-2-Read_Basico.py` | Lê transações com limite padrão configurável |
+| `3-3-Update.py` | Atualiza um registro por Transaction_ID |
+| `3-4-Delete.py` | Remove um registro por Transaction_ID |
+| `3-5-Read_2_5_par.py` | SELECT avançado com múltiplos filtros parametrizados |
+| `3-6-Read_one.py` | Busca uma transação específica por ID e ano |
+
 ---
 
 ## 🚀 Como Rodar
@@ -146,7 +226,13 @@ python scripts/download_conn_retail1.py
 
 **3. Rodar uma query:**
 ```bash
-python scripts/queries_db1+db2/queries_db2/2-1-maiores_compradores.py
+python scripts/queries/queries_db2/2-1-maiores_compradores.py
+```
+
+**4. Rodar uma query parametrizada:**
+```bash
+python scripts/queries/queries_parametrizadas/3-6-Read_one.py
+# Digite o ID da transação e o ano quando solicitado
 ```
 
 ---
@@ -156,4 +242,4 @@ python scripts/queries_db1+db2/queries_db2/2-1-maiores_compradores.py
 - **Python** — pandas, sqlite3
 - **SQLite** — banco de dados local
 - **Orange Data Mining** — exploração visual inicial
-- **VS Code** — ambiente de desenvolvimento 
+- **VS Code** — ambiente de desenvolvimento

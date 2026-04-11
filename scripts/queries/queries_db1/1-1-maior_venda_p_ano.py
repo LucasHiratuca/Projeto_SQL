@@ -19,6 +19,7 @@ query = """
                     ano,
                     vendas_totais,
                     RANK() OVER (PARTITION BY ano ORDER BY vendas_totais DESC) AS ranks
+
                 FROM venda_ano
             )
 

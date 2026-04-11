@@ -10,7 +10,7 @@ query = """
         FROM vendas 
         WHERE venda > 0
         GROUP BY venda
-        ORDER BY venda asc
+        ORDER BY venda ASC
         LIMIT 10;"""
 resultado = pd.read_sql_query(query, conn)
 print(resultado)
